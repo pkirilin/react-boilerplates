@@ -8,6 +8,6 @@ describe('components/App', () => {
       const result = render(<App />);
 
       expect(result.getByText(/React App/)).toBeVisible();
-    })
-  })
-})
+    });
+  });
+});
