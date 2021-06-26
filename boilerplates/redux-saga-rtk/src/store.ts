@@ -9,7 +9,10 @@ export const store = configureStore({
   reducer: {
     counter: counterReducer,
   },
-  middleware: () => [sagaMiddleware],
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      thunk: false,
+    }).concat(sagaMiddleware),
   devTools: process.env.NODE_ENV !== 'production',
 });
 
