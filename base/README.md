@@ -1,13 +1,39 @@
-# React application - base
-
-Add your description here
+# React application
 
 ## Available Scripts
 
-### `yarn start`
+### Run application
 
-### `yarn test`
+```shell
+yarn start
+```
 
-### `yarn build`
+### Build for production
 
-### `yarn eject`
+```shell
+yarn build
+```
+
+### Run tests
+
+```shell
+yarn test
+```
+
+### Lint
+
+```shell
+yarn eslint
+```
+
+### Check formatting
+
+```shell
+yarn prettier:check
+```
+
+### Format code
+
+```shell
+yarn prettier:write
+```
