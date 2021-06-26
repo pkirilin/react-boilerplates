@@ -1,5 +1,5 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
-import { setCount, setCountSuccess } from './counterSlice';
+import { setCount, setCountSuccess } from './counter.slice';
 
 function sleep(ms: number) {
   return new Promise<void>(resolve => {

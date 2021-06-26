@@ -1,8 +1,8 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../__shared__/hooks';
-import { decrement, increment, setCount } from '../counterSlice';
+import { decrement, increment, setCount } from '../counter.slice';
 
-export const Counter: React.FC = () => {
+const Counter: React.FC = () => {
   const count = useAppSelector(state => state.counter.count);
   const isLoading = useAppSelector(state => state.counter.isLoading);
   const dispatch = useAppDispatch();
@@ -39,3 +39,5 @@ export const Counter: React.FC = () => {
     </div>
   );
 };
+
+export default Counter;
