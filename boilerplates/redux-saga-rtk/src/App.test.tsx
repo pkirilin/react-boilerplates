@@ -1,13 +1,16 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 import App from './App';
+import { createTest } from './test-utils';
 
 describe('components/App', () => {
   describe('when mounted', () => {
-    it('should render default message', () => {
-      const result = render(<App />);
+    it('should render counter link', async () => {
+      const result = createTest(<App></App>)
+        .withReduxStore()
+        .withRouter()
+        .render();
 
-      expect(result.getByText(/React App/)).toBeVisible();
+      expect(result.getByText(/Counter/)).toBeVisible();
     });
   });
 });
