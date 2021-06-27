@@ -15,6 +15,32 @@ describe('counter/components/Counter', () => {
     });
   });
 
+  describe('when increment clicked', () => {
+    it('should increment count', () => {
+      const result = createTest(<Counter></Counter>)
+        .withReduxStore()
+        .afterRender(result => {
+          fireEvent.click(result.getByText('+'));
+        })
+        .render();
+
+      expect(result.getByText('count: 1')).toBeVisible();
+    });
+  });
+
+  describe('when decrement clicked', () => {
+    it('should decrement count', () => {
+      const result = createTest(<Counter></Counter>)
+        .withReduxStore()
+        .afterRender(result => {
+          fireEvent.click(result.getByText('-'));
+        })
+        .render();
+
+      expect(result.getByText('count: -1')).toBeVisible();
+    });
+  });
+
   describe('when counter incremented 5 times', () => {
     it('should render count 5', () => {
       const result = createTest(<Counter></Counter>)
