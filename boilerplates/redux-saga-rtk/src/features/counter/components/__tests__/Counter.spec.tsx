@@ -1,3 +1,4 @@
+import { fireEvent } from '@testing-library/react';
 import React from 'react';
 import { createTest } from '../../../../test-utils';
 import { withCounterIncrementedMultipleTimes } from '../../counter.testing';
@@ -21,6 +22,20 @@ describe('counter/components/Counter', () => {
         .render();
 
       expect(result.getByText('count: 5')).toBeVisible();
+    });
+  });
+
+  describe('when redirect button clicked', () => {
+    it('should redirect to main page', async () => {
+      const result = createTest(<Counter></Counter>)
+        .withReduxStore()
+        .withRouter('/counter')
+        .afterRender(result => {
+          fireEvent.click(result.getByText(/Redirect/));
+        })
+        .render();
+
+      expect(result.history.location.pathname).toBe('/');
     });
   });
 });

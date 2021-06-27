@@ -28,10 +28,13 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
       return this;
     },
 
-    withRouter() {
+    withRouter(path) {
       wrapperRenderers.push(child => {
         history = createBrowserHistory();
         historyCreated = true;
+        if (path) {
+          history.push(path);
+        }
         return <Router history={history}>{child}</Router>;
       });
 

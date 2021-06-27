@@ -4,7 +4,7 @@ import { History } from 'history';
 
 export interface TestBuilder {
   withReduxStore(...storeBuilderSteps: StoreBuilderStep[]): TestBuilder;
-  withRouter(): TestBuilder;
+  withRouter(path?: string): TestBuilder;
   afterRender(action: ActionAfterRender): TestBuilder;
   render(): TestBuilderRenderResult;
 }

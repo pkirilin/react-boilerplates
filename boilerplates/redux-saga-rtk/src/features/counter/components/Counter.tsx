@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../__shared__/hooks';
 import { decrement, increment, setCount } from '../counter.slice';
 
@@ -6,6 +7,8 @@ const Counter: React.FC = () => {
   const count = useAppSelector(state => state.counter.count);
   const isLoading = useAppSelector(state => state.counter.isLoading);
   const dispatch = useAppDispatch();
+
+  const history = useHistory();
 
   const handleIncrement = () => {
     dispatch(increment());
@@ -17,6 +20,10 @@ const Counter: React.FC = () => {
 
   const handleSetCount = () => {
     dispatch(setCount());
+  };
+
+  const handleRedirect = () => {
+    history.push('/');
   };
 
   return (
@@ -34,6 +41,9 @@ const Counter: React.FC = () => {
         <button onClick={handleSetCount} disabled={isLoading}>
           Set count 1000 (async)
         </button>
+      </p>
+      <p>
+        <button onClick={handleRedirect}>Redirect to main</button>
       </p>
       {isLoading && <p>Loading...</p>}
     </div>
