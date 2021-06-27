@@ -1,26 +1,11 @@
 import React from 'react';
-import { AnyAction, Store } from '@reduxjs/toolkit';
-import { render, RenderResult } from '@testing-library/react';
+import { Store } from '@reduxjs/toolkit';
+import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { createBrowserHistory, History } from 'history';
 import createTestStore from './createTestStore';
-
-interface TestBuilder {
-  withReduxStore(actions?: AnyAction[]): TestBuilder;
-  withRouter(): TestBuilder;
-  afterRender(action: ActionAfterRender): TestBuilder;
-  render(): TestBuilderRenderResult;
-}
-
-interface TestBuilderRenderResult extends RenderResult {
-  store: Store;
-  history: History;
-}
-
-type WrapperRenderer = (child: React.ReactElement) => React.ReactElement;
-
-type ActionAfterRender = (result: TestBuilderRenderResult) => void;
+import { TestBuilder, WrapperRenderer, ActionAfterRender, TestBuilderRenderResult } from './test-utils.types';
 
 export default function createTest(ui: React.ReactElement): TestBuilder {
   let store: Store | null = null;
