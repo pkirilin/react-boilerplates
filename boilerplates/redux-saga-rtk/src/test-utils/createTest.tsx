@@ -11,6 +11,9 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
   let store: Store | null = null;
   let history: History | null = null;
 
+  let storeCreated = false;
+  let historyCreated = false;
+
   const wrapperRenderers: WrapperRenderer[] = [];
   const actionsAfterRender: ActionAfterRender[] = [];
 
@@ -18,6 +21,7 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
     withReduxStore(...steps) {
       wrapperRenderers.push(child => {
         store = createTestStore(...steps);
+        storeCreated = true;
         return <Provider store={store}>{child}</Provider>;
       });
 
@@ -27,6 +31,7 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
     withRouter() {
       wrapperRenderers.push(child => {
         history = createBrowserHistory();
+        historyCreated = true;
         return <Router history={history}>{child}</Router>;
       });
 
@@ -43,8 +48,13 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
       const renderResult = render(<React.Fragment>{wrappedUi}</React.Fragment>);
       const testBuilderRenderResult: TestBuilderRenderResult = {
         ...renderResult,
-        store: tryGetValueOrError(store, 'Redux store does not exist'),
-        history: tryGetValueOrError(history, 'Router history does not exist'),
+        store: tryGetValueOrError(store, storeCreated, () => createTestStore(), 'Redux store does not exist'),
+        history: tryGetValueOrError(
+          history,
+          historyCreated,
+          () => createBrowserHistory(),
+          'Router history does not exist',
+        ),
       };
 
       actionsAfterRender.forEach(action => {
@@ -56,7 +66,11 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
   };
 }
 
-function tryGetValueOrError<T>(value: T | null, errorMessage: string): T {
+function tryGetValueOrError<T>(value: T | null, isCreated: boolean, createDefault: () => T, errorMessage: string): T {
+  if (!isCreated) {
+    return createDefault();
+  }
+
   if (value === null) {
     throw new Error(errorMessage);
   }

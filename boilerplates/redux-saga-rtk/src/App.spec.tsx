@@ -7,7 +7,6 @@ describe('components/App', () => {
     it('should render counter link', async () => {
       const result = createTest(<App></App>)
         .withReduxStore()
-        .withRouter()
         .render();
 
       expect(result.getByText(/Counter/)).toBeVisible();
