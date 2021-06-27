@@ -15,9 +15,9 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
   const actionsAfterRender: ActionAfterRender[] = [];
 
   return {
-    withReduxStore(actions = []) {
+    withReduxStore(...steps) {
       wrapperRenderers.push(child => {
-        store = createTestStore(actions);
+        store = createTestStore(...steps);
         return <Provider store={store}>{child}</Provider>;
       });
 
