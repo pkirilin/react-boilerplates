@@ -7,7 +7,6 @@ const Counter: React.FC = () => {
   const count = useAppSelector(state => state.counter.count);
   const isLoading = useAppSelector(state => state.counter.isLoading);
   const dispatch = useAppDispatch();
-
   const history = useHistory();
 
   const handleIncrement = () => {
@@ -39,7 +38,7 @@ const Counter: React.FC = () => {
       </p>
       <p>
         <button onClick={handleSetCount} disabled={isLoading}>
-          Set count 1000 (async)
+          Set count (async)
         </button>
       </p>
       <p>

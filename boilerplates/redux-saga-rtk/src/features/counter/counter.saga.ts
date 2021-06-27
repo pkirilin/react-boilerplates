@@ -1,4 +1,5 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
+import api from './api';
 import { setCount, setCountSuccess } from './counter.slice';
 
 function sleep(ms: number) {
@@ -10,8 +11,9 @@ function sleep(ms: number) {
 }
 
 function* handleSetCount() {
-  yield call(sleep, 2000);
-  yield put(setCountSuccess(1000));
+  yield call(sleep, 1000);
+  const count: number = yield call(api.getCount);
+  yield put(setCountSuccess(count));
 }
 
 function* watchSetCount() {
