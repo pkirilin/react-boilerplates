@@ -35,7 +35,7 @@ describe('counter/components/Counter', () => {
         })
         .render();
 
-      expect(result.history.location.pathname).toBe('/');
+      expect(result).toHaveRouterPath('/');
     });
   });
 });
