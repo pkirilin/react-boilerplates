@@ -1,17 +1,21 @@
 import { AnyAction, Store } from '@reduxjs/toolkit';
-import { RenderResult } from '@testing-library/react';
+import { RenderResult, waitForOptions } from '@testing-library/react';
 import { History } from 'history';
 
 export interface TestBuilder {
   withReduxStore(...storeBuilderSteps: StoreBuilderStep[]): TestBuilder;
   withRouter(path?: string): TestBuilder;
-  afterRender(action: ActionAfterRender): TestBuilder;
+  setupMock<T>(name: string, setup: () => jest.Mock<T>): TestBuilder;
+  afterRender(name: string, action: ActionAfterRender): TestBuilder;
   render(): TestBuilderRenderResult;
 }
 
 export interface TestBuilderRenderResult extends RenderResult {
   store: Store;
   history: History;
+  getMock(name: string): jest.Mock;
+  waitForMockCall(name: string, callTimes?: number, options?: waitForOptions): Promise<void>;
+  execute(...names: string[]): void;
 }
 
 export type WrapperRenderer = (child: React.ReactElement) => React.ReactElement;

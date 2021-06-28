@@ -1,6 +1,6 @@
 import React from 'react';
 import { Store } from '@reduxjs/toolkit';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { createBrowserHistory, History } from 'history';
@@ -15,7 +15,8 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
   let historyCreated = false;
 
   const wrapperRenderers: WrapperRenderer[] = [];
-  const actionsAfterRender: ActionAfterRender[] = [];
+  const actionsAfterRenderMap = new Map<string, ActionAfterRender>();
+  const mocksMap = new Map<string, jest.Mock>();
 
   return {
     withReduxStore(...steps) {
@@ -41,8 +42,17 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
       return this;
     },
 
-    afterRender(action) {
-      actionsAfterRender.push(action);
+    setupMock<T>(name: string, setup: () => jest.Mock<T>) {
+      if (mocksMap.has(name)) {
+        throw new Error(`Mock with name '${name}' already exists`);
+      }
+
+      mocksMap.set(name, setup());
+      return this;
+    },
+
+    afterRender(name, action) {
+      actionsAfterRenderMap.set(name, action);
       return this;
     },
 
@@ -58,11 +68,32 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
           () => createBrowserHistory(),
           'Router history does not exist',
         ),
-      };
 
-      actionsAfterRender.forEach(action => {
-        action(testBuilderRenderResult);
-      });
+        getMock(name: string) {
+          if (!mocksMap.has(name)) {
+            throw new Error(`Mock with name '${name}' does not exist`);
+          }
+          return mocksMap.get(name) as jest.Mock;
+        },
+
+        async waitForMockCall(name: string, callTimes = 1, options) {
+          if (!mocksMap.has(name)) {
+            throw new Error(`Mock with name '${name}' does not exist`);
+          }
+
+          const mock = mocksMap.get(name);
+          await waitFor(() => expect(mock).toHaveBeenCalledTimes(callTimes), options);
+        },
+
+        execute(...names: string[]) {
+          names.forEach(name => {
+            if (actionsAfterRenderMap.has(name)) {
+              const action = actionsAfterRenderMap.get(name) as ActionAfterRender;
+              action(this);
+            }
+          });
+        },
+      };
 
       return testBuilderRenderResult;
     },
