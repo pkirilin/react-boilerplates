@@ -18,6 +18,13 @@ export interface TestBuilderRenderResult extends RenderResult {
   execute(...names: string[]): void;
 }
 
+export interface TestBuilderRenderResultContext {
+  store: Store;
+  history: History;
+  mocksMap: Map<string, jest.Mock>;
+  actionsMap: Map<string, TestBuilderAction>;
+}
+
 export type WrapperRenderer = (child: React.ReactElement) => React.ReactElement;
 
 export type TestBuilderAction = (result: TestBuilderRenderResult) => void;
