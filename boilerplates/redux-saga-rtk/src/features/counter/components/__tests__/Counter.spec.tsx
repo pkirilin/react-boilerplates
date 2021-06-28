@@ -22,7 +22,7 @@ describe('counter/components/Counter', () => {
     it('should increment count', () => {
       const result = createTest(<Counter></Counter>)
         .withReduxStore()
-        .afterRender('click increment', result => {
+        .setupAction('click increment', result => {
           fireEvent.click(result.getByText('+'));
         })
         .render();
@@ -37,7 +37,7 @@ describe('counter/components/Counter', () => {
     it('should decrement count', () => {
       const result = createTest(<Counter></Counter>)
         .withReduxStore()
-        .afterRender('click decrement', result => {
+        .setupAction('click decrement', result => {
           fireEvent.click(result.getByText('-'));
         })
         .render();
@@ -63,7 +63,7 @@ describe('counter/components/Counter', () => {
       const result = createTest(<Counter></Counter>)
         .withReduxStore()
         .setupMock('api', () => asJestMock(api.getCount).mockResolvedValueOnce(123))
-        .afterRender('click set count', result => {
+        .setupAction('click set count', result => {
           fireEvent.click(result.getByText(/Set count/));
         })
         .render();
@@ -79,7 +79,7 @@ describe('counter/components/Counter', () => {
       const result = createTest(<Counter></Counter>)
         .withReduxStore()
         .withRouter('/counter')
-        .afterRender('click redirect', result => {
+        .setupAction('click redirect', result => {
           fireEvent.click(result.getByText(/Redirect/));
         })
         .render();

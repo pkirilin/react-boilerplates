@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { createBrowserHistory, History } from 'history';
 import createTestStore from './createTestStore';
-import { TestBuilder, WrapperRenderer, ActionAfterRender, TestBuilderRenderResult } from './test-utils.types';
+import { TestBuilder, WrapperRenderer, TestBuilderAction, TestBuilderRenderResult } from './test-utils.types';
 
 export default function createTest(ui: React.ReactElement): TestBuilder {
   let store: Store | null = null;
@@ -15,7 +15,7 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
   let historyCreated = false;
 
   const wrapperRenderers: WrapperRenderer[] = [];
-  const actionsAfterRenderMap = new Map<string, ActionAfterRender>();
+  const actionsMap = new Map<string, TestBuilderAction>();
   const mocksMap = new Map<string, jest.Mock>();
 
   return {
@@ -51,8 +51,8 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
       return this;
     },
 
-    afterRender(name, action) {
-      actionsAfterRenderMap.set(name, action);
+    setupAction(name, action) {
+      actionsMap.set(name, action);
       return this;
     },
 
@@ -87,8 +87,8 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
 
         execute(...names: string[]) {
           names.forEach(name => {
-            if (actionsAfterRenderMap.has(name)) {
-              const action = actionsAfterRenderMap.get(name) as ActionAfterRender;
+            if (actionsMap.has(name)) {
+              const action = actionsMap.get(name) as TestBuilderAction;
               action(this);
             }
           });

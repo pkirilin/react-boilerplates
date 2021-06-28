@@ -6,7 +6,7 @@ export interface TestBuilder {
   withReduxStore(...storeBuilderSteps: StoreBuilderStep[]): TestBuilder;
   withRouter(path?: string): TestBuilder;
   setupMock<T>(name: string, setup: () => jest.Mock<T>): TestBuilder;
-  afterRender(name: string, action: ActionAfterRender): TestBuilder;
+  setupAction(name: string, action: TestBuilderAction): TestBuilder;
   render(): TestBuilderRenderResult;
 }
 
@@ -20,7 +20,7 @@ export interface TestBuilderRenderResult extends RenderResult {
 
 export type WrapperRenderer = (child: React.ReactElement) => React.ReactElement;
 
-export type ActionAfterRender = (result: TestBuilderRenderResult) => void;
+export type TestBuilderAction = (result: TestBuilderRenderResult) => void;
 
 export type StoreBuilderStep = (actions: AnyAction[]) => void;
 
