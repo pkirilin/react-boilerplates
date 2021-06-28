@@ -49,10 +49,6 @@ export default function createTest(ui: React.ReactElement): TestBuilder {
     },
 
     setupMock<T>(name: string, setup: () => jest.Mock<T>) {
-      if (mocksMap.has(name)) {
-        throw new Error(`Mock with name '${name}' already exists`);
-      }
-
       mocksMap.set(name, setup());
       return this;
     },
