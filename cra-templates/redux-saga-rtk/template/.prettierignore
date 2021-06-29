@@ -1,0 +1,9 @@
+.vscode
+
+build
+public
+
+tsconfig.json
+
+*.md
+*.mdx

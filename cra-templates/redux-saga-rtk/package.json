@@ -1,0 +1,26 @@
+{
+  "name": "@pkirilin/cra-template-redux-saga-rtk",
+  "version": "0.0.1",
+  "keywords": [
+    "react",
+    "create-react-app",
+    "template"
+  ],
+  "description": "The template for Create React App. Includes redux with redux-toolkit, redux-saga and testing utilities",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pkirilin/react-boilerplates.git",
+    "directory": "cra-templates/redux-saga-rtk"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=10"
+  },
+  "bugs": {
+    "url": "https://github.com/pkirilin/react-boilerplates/issues"
+  },
+  "files": [
+    "template",
+    "template.json"
+  ]
+}
