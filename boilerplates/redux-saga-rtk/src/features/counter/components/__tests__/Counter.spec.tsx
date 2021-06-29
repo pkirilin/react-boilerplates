@@ -1,5 +1,4 @@
 import { fireEvent } from '@testing-library/react';
-import React from 'react';
 import { asJestMock, createTest } from '../../../../test-utils';
 import api from '../../api';
 import { withCounterIncrementedMultipleTimes } from '../../counter.testing';
