@@ -1,4 +1,4 @@
-# @pkirilin/cra-template-base
+# @pkirilin/cra-template-redux-saga-rtk
 
 CRA template. Includes:
 
