@@ -1,13 +1,12 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { counterApi } from './counter.api';
 
 export type CounterState = {
   count: number;
-  isLoading: boolean;
 };
 
 const initialState: CounterState = {
   count: 0,
-  isLoading: false,
 };
 
 const counterSlice = createSlice({
@@ -21,18 +20,13 @@ const counterSlice = createSlice({
     decrement(state) {
       state.count--;
     },
-
-    setCount(state) {
-      state.isLoading = true;
-    },
-
-    setCountSuccess(state, action: PayloadAction<number>) {
-      state.count = action.payload;
-      state.isLoading = false;
-    },
   },
+  extraReducers: builder =>
+    builder.addMatcher(counterApi.endpoints.setCount.matchFulfilled, (state, { payload }) => {
+      state.count = payload;
+    }),
 });
 
-export const { increment, decrement, setCount, setCountSuccess } = counterSlice.actions;
+export const { increment, decrement } = counterSlice.actions;
 
 export default counterSlice.reducer;

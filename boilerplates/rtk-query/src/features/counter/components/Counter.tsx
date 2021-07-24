@@ -1,13 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../__shared__/hooks';
-import { decrement, increment, setCount } from '../counter.slice';
+import { useSetCountMutation } from '../counter.api';
+import { decrement, increment } from '../counter.slice';
 
 const Counter: React.FC = () => {
   const count = useAppSelector(state => state.counter.count);
-  const isLoading = useAppSelector(state => state.counter.isLoading);
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const [setCount, { isLoading }] = useSetCountMutation();
 
   const handleIncrement = () => {
     dispatch(increment());
@@ -18,7 +19,7 @@ const Counter: React.FC = () => {
   };
 
   const handleSetCount = () => {
-    dispatch(setCount());
+    setCount();
   };
 
   const handleRedirect = () => {
