@@ -9,7 +9,7 @@ export const counterApi = createApi({
         await new Promise<void>(resolve => {
           setTimeout(() => {
             resolve();
-          }, 2000);
+          }, 1000);
         });
 
         const result = await baseQuery({

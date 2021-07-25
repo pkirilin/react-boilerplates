@@ -1,10 +1,7 @@
 import { fireEvent } from '@testing-library/react';
 import { asJestMock, createTest } from '../../../../test-utils';
-import api from '../../api';
 import { withCounterIncrementedMultipleTimes } from '../../counter.testing';
 import Counter from '../Counter';
-
-jest.mock('../../api');
 
 describe('counter/components/Counter', () => {
   describe('when mounted', () => {
@@ -59,9 +56,15 @@ describe('counter/components/Counter', () => {
 
   describe('when set count clicked', () => {
     it('should fetch and set count from api', async () => {
+      const response: Response = {
+        ...new Response(),
+        text: jest.fn().mockResolvedValueOnce('123'),
+        clone: jest.fn(),
+      };
+
       const result = createTest(<Counter></Counter>)
         .withReduxStore()
-        .setupMock('api', () => asJestMock(api.getCount).mockResolvedValueOnce(123))
+        .setupMock('api', () => asJestMock(global.fetch).mockResolvedValueOnce(response))
         .setupAction('click set count', result => {
           fireEvent.click(result.getByText(/Set count/));
         })
